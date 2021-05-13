@@ -11,7 +11,7 @@ Planner::Planner(const Planner_parameters &parameters,
                  const Cell &goal) :
         parameters(parameters),
         data(data),
-        options_graph(parameters.use_pois ? data.pois_graph : data.world_graph),
+        options_graph(data.pois_graph),
         filter(filter_parameters,
                predator_parameters,
                data,
@@ -24,11 +24,6 @@ Planner::Planner(const Planner_parameters &parameters,
     model.add_agent(prey);
     model.add_agent(predator);
     model.start_episode();
-    if (parameters.tree_mode == "mcts"){
-        tree_mode = Search_tree::mcts;
-    } else {
-        tree_mode = Search_tree::ucb1;
-    }
 }
 
 Move Planner::get_best_move(const Model_public_state &state,

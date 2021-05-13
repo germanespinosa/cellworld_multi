@@ -18,6 +18,7 @@ set (cellworld_multi_files
         src/reward.cpp
         src/static_data.cpp
         src/search_tree.cpp
+        src/generative_model.cpp
         )
 
 add_library( cellworld_multi ${cellworld_multi_files})

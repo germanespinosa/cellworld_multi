@@ -5,21 +5,18 @@
 struct Planner_parameters : json_cpp::Json_object {
     unsigned int roll_outs;
     Reward reward;
-    std::string tree_mode;
-    bool use_pois;
     Json_object_members({
                             Add_member(roll_outs);
                             Add_member(reward);
-                            Add_member(tree_mode);
-                            Add_member(use_pois);
                         })
 };
 
 struct Planner{
-    struct Panner_prey : cell_world::Stateless_agent{
-        Panner_prey (const cell_world::Cell &start, const cell_world::Cell &goal) :
+    struct Panning_agent : cell_world::Stateless_agent{
+        Panner_agent (const cell_world::Cell &start, const cell_world::Cell &goal) :
                 start_cell(start), goal(goal){
         }
+        virtual float step_reward(const cell_world::Model_public_state &) = 0;
         const cell_world::Cell &start_episode() override {
             return start_cell;
         };
@@ -48,7 +45,6 @@ struct Planner{
 
     cell_world::Cell_group get_valid_options(const cell_world::Cell &, unsigned int) const;
 
-
     void reset();
 
     const Planner_parameters &parameters;
@@ -58,8 +54,7 @@ struct Planner{
     cell_world::Coordinates option;
     Particle_filter filter;
     cell_world::Model model;
-    Panner_prey prey;
+    Panning_agent prey;
     Predator predator;
     Search_tree::Mode tree_mode;
-    bool use_pois;
 };
